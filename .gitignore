@@ -59,3 +59,5 @@ skills-lock.json
 # CLAUDE.md between the nextjs-agent-rules markers, so tracking it here would
 # just re-dirty the tree after each dev session.
 /AGENTS.md
+
+.vercel

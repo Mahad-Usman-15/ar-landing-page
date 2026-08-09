@@ -32,7 +32,7 @@ export const SITE_URL = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 export const CONTACT = {
   name: "AbdurRahman Mahmood",
   title: "Business & Creative Strategist",
-  email: "a.rahman.freelancing@gmail.com",
+  email: "abdurrahmanmahmood.work@gmail.com",
   whatsapp: "+92 335 0847032",
   whatsappUrl: "https://wa.me/923350847032",
   linkedin: "https://linkedin.com/in/abdurrahmanmahmood",
