@@ -1,26 +1,116 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* DESIGN.md — Neon-Black Impact palette */
+  --color-canvas: #000000;
+  --color-charcoal: #2a2a2a;
+  --color-acid: #dbff00;
+  --color-mist: #d0d0d0;
+  --color-line: #444444;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-display: var(--font-display), "Arial Narrow", sans-serif;
+  --font-body: var(--font-body), Arial, sans-serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --shadow-card: 0px 32px 68px 0px rgba(0, 0, 0, 0.3);
+
+  --animate-marquee: marquee 28s linear infinite;
+  --animate-scroll-pulse: scroll-pulse 1.8s ease-in-out infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes scroll-pulse {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(8px);
+      opacity: 0.4;
+    }
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* Anchor targets clear the fixed header */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: #ffffff;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-acid);
+  color: #000000;
+}
+
+/* Subtle acid glow on hover — kept soft per single-accent discipline */
+.glow-hover {
+  transition:
+    box-shadow 0.4s ease,
+    border-color 0.4s ease,
+    transform 0.4s ease;
+}
+
+.glow-hover:hover {
+  box-shadow:
+    0 0 24px 0 rgba(219, 255, 0, 0.14),
+    0 0 64px 0 rgba(219, 255, 0, 0.07);
+  border-color: rgba(219, 255, 0, 0.5);
+}
+
+.glow-text-hover {
+  transition: text-shadow 0.4s ease, color 0.4s ease;
+}
+
+.glow-text-hover:hover {
+  color: var(--color-acid);
+  text-shadow: 0 0 28px rgba(219, 255, 0, 0.45);
+}
+
+/* Reveal-on-scroll (activated by motion.tsx) */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  [data-parallax] {
+    transform: none !important;
+  }
+  .animate-marquee,
+  .animate-scroll-pulse {
+    animation: none;
+  }
 }

@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AbdurRahman Mahmood — Landing Page
 
-## Getting Started
+Conversion-focused personal brand site for AbdurRahman Mahmood, Business & Creative Strategist.
+Built with Next.js 16 (App Router), Tailwind CSS v4, TypeScript, and Resend for contact-form delivery.
 
-First, run the development server:
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local   # then fill in the values below
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The contact form is the only part that needs configuration. Without `RESEND_API_KEY`
+the form still validates and responds, but tells visitors to email directly instead
+of silently failing.
 
-## Learn More
+| Variable | Required | Purpose |
+|---|---|---|
+| `RESEND_API_KEY` | yes, to send mail | API key from [resend.com/api-keys](https://resend.com/api-keys) |
+| `CONTACT_FROM_EMAIL` | no | Verified sender on your Resend domain. Defaults to Resend's shared test sender. |
+| `CONTACT_TO_EMAIL` | no | Where enquiries land. Defaults to the address in `lib/data.ts`. |
+| `NEXT_PUBLIC_SITE_URL` | before deploy | Public origin used for canonical URLs, sitemap, and Open Graph tags. |
 
-To learn more about Next.js, take a look at the following resources:
+`CONTACT_FROM_EMAIL` must be on a domain you have verified in Resend — mail from an
+unverified domain is rejected.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Path | What's there |
+|---|---|
+| `app/page.tsx` | Section composition and JSON-LD structured data |
+| `app/layout.tsx` | Fonts and all SEO metadata |
+| `app/actions.ts` | Contact form Server Action (validation + Resend) |
+| `components/` | One file per section, plus `motion.tsx` for scroll effects |
+| `lib/data.ts` | Services, portfolio items, experience, contact details — edit content here |
+| `public/portfolio/` | Portfolio images and showreels served to the browser |
 
-## Deploy on Vercel
+Content changes (services, roles, portfolio items, contact details) are almost always
+edits to `lib/data.ts` rather than to components.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Design
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Design tokens come from `DESIGN.md` — a black canvas with acid yellow `#dbff00` as the
+single accent, condensed display type over a light geometric body face. Tokens live in
+the `@theme` block of `app/globals.css`.
+
+Bebas Neue and Montserrat stand in for the licensed Zuume and Paralucent faces in the
+spec. Swapping in the real fonts means replacing the `next/font` calls in
+`app/layout.tsx`; the `--font-display` and `--font-body` variables flow everywhere else.
+
+The hero name is sized in container-query units (`cqw`) so it spans the viewport exactly
+at any width. That value is calibrated to Bebas Neue's glyph width — changing the display
+font or the name means recalibrating it in `components/Hero.tsx`.
+
+## Scripts
+
+```bash
+npm run dev     # development server
+npm run build   # production build
+npm start       # serve the production build
+npm run lint    # eslint
+```
